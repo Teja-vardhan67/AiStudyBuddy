@@ -2,12 +2,9 @@
 // Import necessary modules
 const express = require('express');
 const path = require('path');
-const dotenv = require('dotenv');
 const { OpenAI } = require('openai');
 
 // Load environment variables from a .env file
-dotenv.config();
-
 // Create a new instance of the OpenAI client, configured for OpenRouter
 const openai = new OpenAI({
     apiKey: process.env.OPENROUTER_API_KEY,
