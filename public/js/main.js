@@ -31,6 +31,7 @@ const chatHistory = document.getElementById('chat-history');
 const chatInputBox = document.getElementById('chat-input-box');
 const sendChatBtn = document.getElementById('send-chat-btn');
 
+
 // A reusable function to handle API calls
 async function callAPI(endpoint, prompt) {
     if (prompt === '') {
@@ -65,11 +66,40 @@ async function callAPI(endpoint, prompt) {
     return null;
 }
 
+// Validation functions
+function validateUsername(username) {
+    const letters = /^[A-Za-z]+$/; // Regex to check for only alphabetic characters
+    return letters.test(username);
+}
+
+function validatePassword(password) {
+    // Regex for at least one lowercase, one uppercase, one number, and one special character
+    const hasLowercase = /[a-z]/;
+    const hasUppercase = /[A-Z]/;
+    const hasNumber = /[0-9]/;
+    const hasSpecialChar = /[!@#$%^&*]/; // You can customize these special characters
+    
+    return hasLowercase.test(password) && hasUppercase.test(password) && hasNumber.test(password) && hasSpecialChar.test(password);
+}
+
+
 // Add event listener for login
 loginBtn.addEventListener('click', async () => {
     const username = usernameInput.value;
     const password = passwordInput.value;
 
+    // Front-end validation
+    if (!validateUsername(username)) {
+        loginErrorMessage.textContent = 'Username must contain only alphabetic characters.';
+        return;
+    }
+    
+    if (!validatePassword(password)) {
+        loginErrorMessage.textContent = 'Password must have at least one capital letter, one lowercase letter, one number, and one special character.';
+        return;
+    }
+    
+    // If validation passes, proceed with the login request
     const response = await fetch('/api/login', {
         method: 'POST',
         headers: {
